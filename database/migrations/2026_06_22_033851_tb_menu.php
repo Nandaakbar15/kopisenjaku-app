@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('tb_menu', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->references('id')->on('tb_categories');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->text('description');
+            $table->decimal('price');
+            $table->string('image');
+            $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });
     }
@@ -25,8 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('tb_menu');
     }
 };
