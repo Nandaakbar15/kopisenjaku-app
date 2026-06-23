@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Contacts;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class ContactsController extends Controller
 {
@@ -12,7 +16,13 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        //
+        $username = Auth::user()->name;
+        $contacts = Contacts::paginate(5);
+
+        return view("dashboardAdmin.contacts.IndexContacts", [
+            'username' => $username,
+            'contacts' => $contacts
+        ]);
     }
 
     /**
@@ -20,7 +30,11 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        //
+        $username = Auth::user()->name;
+
+        return view('dashboardAdmin.contacts.AddContacts', [
+            'username' => $username
+        ]);
     }
 
     /**
@@ -28,15 +42,32 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'phone' => 'required|string',
+            'email' => 'required|string',
+            'address' => 'required|string',
+            'maps_link' => 'required|string'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Contacts $contacts)
-    {
-        //
+        try {
+            DB::beginTransaction();
+
+            Contacts::create($validateData);
+
+            DB::commit();
+
+            return redirect('/dashboard/contacts/contacts_data')->with('success', 'Berhasil menambahkan data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Add Contacts Error : ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'data' => $validateData
+            ]);
+
+            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**

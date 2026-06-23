@@ -4,14 +4,8 @@
     <div class="space-y-8">
         <!-- Page Header -->
         <div class="anim-fade-up" style="animation-delay: 0.05s;">
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Halaman data kategori</h1>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Halaman data pesanan</h1>
         </div>
-
-        <h2 class="anim-fade-up" style="animation-delay: 0.05s;">
-            <a href="/dashboard/categories/add_categories_form"
-                class="inline-block text-white rounded-lg shadow-lg px-4 py-2 bg-blue-500 hover:bg-blue-700">Tambah
-                Kategori</a>
-        </h2>
 
         <div class="relative overflow-x-auto bg-white shadow-lg rounded-lg border border-default anim-fade-up"
             style="animation-delay: 0.1s">
@@ -19,10 +13,16 @@
                 <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                     <tr>
                         <th scope="col" class="px-6 py-3 font-medium">
-                            ID Categories
+                            ID Orders
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
-                            Name Categories
+                            Customer Name
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Total Price
+                        </th>
+                        <th scope="col" class="px-6 py-3 font-medium">
+                            Status
                         </th>
                         <th scope="col" class="px-6 py-3 font-medium">
                             Action
@@ -30,21 +30,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $item)
+                    @foreach ($orders as $item)
                         <tr class="bg-neutral-primary border-b border-default">
                             <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
                                 {{ $item->id }}
                             </th>
-                            <td class="px-6 py-4">
-                                {{ $item->name }}
-                            </td>
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                                {{ $item->customer_name }}
+                            </th>
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                                Rp. {{ $item->total_price }}
+                            </th>
+                            <th scope="row" class="px-6 py-4 font-medium text-heading whitespace-nowrap">
+                                {{ $item->status }}
+                            </th>
                             <td class="space-x-2 px-6 py-4">
-                                <a href="/dashboard/categories/edit_categories_form/{{ $item->id }}"
+                                <a href="/dashboard/orders/details_orders/{{ $item->id }}"
                                     class="inline-block text-white rounded-lg shadow-lg px-4 py-2 bg-blue-500 hover:bg-blue-700">
-                                    Edit
+                                    Detail
                                 </a>
 
-                                <form action="/dashboard/categories/delete_categories/{{ $item->id }}" method="POST"
+                                <form action="/dashboard/orders/delete_orders/{{ $item->id }}" method="POST"
                                     class="inline">
                                     @csrf
                                     <button type="submit"
@@ -57,8 +63,8 @@
                     @endforeach
                 </tbody>
             </table>
-            <div class="mt-6 flex justify-center">
-                {{ $categories->links() }}
+            <div class="flex justify-center mt-6">
+                {{ $orders->links() }}
             </div>
         </div>
     </div>

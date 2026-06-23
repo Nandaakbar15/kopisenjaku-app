@@ -78,19 +78,16 @@ class GalleriesController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Galleries $galleries)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Galleries $galleries)
     {
-        //
+        $username = Auth::user()->name;
+
+        return view("dashboardAdmin.galleries.EditGalleries", [
+            'username' => $username,
+            'galleries' => $galleries
+        ]);
     }
 
     /**
@@ -98,7 +95,42 @@ class GalleriesController extends Controller
      */
     public function update(Request $request, Galleries $galleries)
     {
-        //
+        $validateData = $request->validate([
+            'title' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if($request->hasFile('image')) {
+
+                if($request->gambarLama) {
+                    Storage::disk('public')->delete($request->gambarLama);
+                }
+
+                $file = $request->file('image');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['image'] = '/storage/' . $path;
+            }
+
+            $galleries->update($validateData);
+
+            DB::commit();
+
+            return redirect('/dashboard/galleries/galleries_data')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Edit Galleries Error : ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'data' => $validateData
+            ]);
+
+            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -106,6 +138,8 @@ class GalleriesController extends Controller
      */
     public function destroy(Galleries $galleries)
     {
-        //
+        $galleries->delete();
+
+        return redirect('/dashboard/galleries/galleries_data')->with('success', 'Berhasil menghapus data!');
     }
 }

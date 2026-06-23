@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalleriesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrdersController;
+use App\Http\Controllers\ReservationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,10 +43,29 @@ Route::middleware('auth')->group(function () {
             Route::get('/galleries_data', [GalleriesController::class, 'index']);
             Route::get('/add_galleries_form', [GalleriesController::class, 'create']);
             Route::post('/add_galleries', [GalleriesController::class, 'store']);
+            Route::get('/edit_galleries_form/{galleries}', [GalleriesController::class, 'edit']);
+            Route::put('/edit_galleries/{galleries}', [GalleriesController::class, 'update']);
         });
 
         Route::prefix('contacts')->group(function () {
+            Route::get('/contacts_data', [ContactsController::class, 'index']);
+            Route::get('/add_contacts_form', [ContactsController::class, 'create']);
+            Route::post('/add_contacts', [ContactsController::class, 'store']);
+            Route::get('/edit_contacts_form/{contacts}', [ContactsController::class, 'edit']);
+            Route::put('/edit_contacts/{contacts}', [ContactsController::class, 'update']);
+            Route::delete('/delete_contacts/{contact}', [ContactsController::class, 'destroy']);
+        });
 
+        Route::prefix('reservations')->group(function () {
+            Route::get('/reservations_data', [ReservationsController::class, 'index']);
+            Route::get('/detail_reservations/{reservations}', [ReservationsController::class, 'show']);
+            Route::delete('/delete_reservations/{reservations}', [ReservationsController::class, 'destroy']);
+        });
+
+        Route::prefix('orders')->group(function () {
+            Route::get('/order_data', [OrdersController::class, 'index']);
+            Route::get('/detail_orders/{orders}', [OrdersController::class, 'show']);
+            Route::delete('/delete_orders/{orders}', [OrdersController::class, 'destroy']);
         });
     });
 });

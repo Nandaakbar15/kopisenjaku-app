@@ -13,7 +13,8 @@
                 Gallery</a>
         </h2>
 
-        <div class="relative overflow-x-auto bg-white shadow-lg rounded-lg border border-default">
+        <div class="relative overflow-x-auto bg-white shadow-lg rounded-lg border border-default anim-fade-up"
+            style="animation-delay: 0.1s;">
             <table class="w-full text-sm text-left rtl:text-right text-body">
                 <thead class="text-sm text-body bg-neutral-secondary-soft border-b rounded-base border-default">
                     <tr>

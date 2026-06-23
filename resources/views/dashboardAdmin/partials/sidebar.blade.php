@@ -25,18 +25,21 @@
             </a>
 
             <div class="section-label mt-6">Data Master</div>
+
             <a href="/dashboard/categories/categories_data"
                 class="nav-item {{ request()->is('dashboard/categories*') ? 'active' : '' }}" onclick="setActive(this)">
                 <i class="fa-solid fa-tags"></i>
                 <span class="nav-text">Kategori</span>
                 <span class="nav-tooltip">Kategori</span>
             </a>
+
             <a href="/dashboard/menu/menu_data" class="nav-item {{ request()->is('dashboard/menu*') ? 'active' : '' }}"
                 onclick="setActive(this)">
                 <i class="fa-solid fa-utensils"></i>
                 <span class="nav-text">Menu</span>
                 <span class="nav-tooltip">Menu</span>
             </a>
+
             <a href="/dashboard/galleries/galleries_data"
                 class="nav-item {{ request()->is('dashboard/galleries*') ? 'active' : '' }}" onclick="setActive(this)">
                 <i class="fa-solid fa-images"></i>
@@ -44,12 +47,28 @@
                 <span class="nav-tooltip">Galeri</span>
             </a>
 
-            <div class="section-label mt-6">Komunikasi</div>
-            <a href="/dashboard/contacts" class="nav-item {{ request()->is('dashboard/contacts*') ? 'active' : '' }}"
+            <a href="/dashboard/reservations/reservations_data"
+                class="nav-item {{ request()->is('dashboard/reservations*') ? 'active' : '' }}"
                 onclick="setActive(this)">
+                <i class="fa-solid fa-images"></i>
+                <span class="nav-text">Reservation</span>
+                <span class="nav-tooltip">Reservation</span>
+            </a>
+
+            <a href="/dashboard/orders/order_data"
+                class="nav-item {{ request()->is('dashboard/orders*') ? 'active' : '' }}" onclick="setActive(this)">
+                <i class="fa-solid fa-images"></i>
+                <span class="nav-text">Order</span>
+                <span class="nav-tooltip">Order</span>
+            </a>
+
+
+            <div class="section-label mt-6">Komunikasi</div>
+            <a href="/dashboard/contacts/contacts_data"
+                class="nav-item {{ request()->is('dashboard/contacts*') ? 'active' : '' }}" onclick="setActive(this)">
                 <i class="fa-solid fa-envelope"></i>
-                <span class="nav-text">Pesan</span>
-                <span class="nav-tooltip">Pesan</span>
+                <span class="nav-text">Informasi Kontak</span>
+                <span class="nav-tooltip">Informasi Kontak</span>
             </a>
         </nav>
 
