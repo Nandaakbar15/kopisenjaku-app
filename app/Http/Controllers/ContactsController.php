@@ -75,7 +75,12 @@ class ContactsController extends Controller
      */
     public function edit(Contacts $contacts)
     {
-        //
+        $username = Auth::user()->name;
+
+        return view("dashboardAdmin.contacts.EditContacts", [
+            'username' => $username,
+            'contacts' => $contacts
+        ]);
     }
 
     /**
@@ -83,7 +88,32 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contacts $contacts)
     {
-        //
+        $validateData = $request->validate([
+            'phone' => 'required|string',
+            'email' => 'required|string',
+            'address' => 'required|string',
+            'maps_link' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $contacts->update($validateData);
+
+            DB::commit();
+
+            return redirect('/dashboard/contacts/contacts_data')->with('success', 'Berhasil menambahkan data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Add Contacts Error : ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'data' => $validateData
+            ]);
+
+            return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -91,6 +121,8 @@ class ContactsController extends Controller
      */
     public function destroy(Contacts $contacts)
     {
-        //
+        $contacts->delete();
+
+        return redirect('/dashboard/contacts/contacts_data')->with('success', 'Berhasil menghapus data!');
     }
 }

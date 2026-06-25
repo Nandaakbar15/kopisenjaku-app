@@ -19,6 +19,9 @@
         {{-- Icon --}}
         <link rel="icon" type="image/png" href="images/caffee-logo.png">
 
+        {{-- other CSS --}}
+        <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
+
         <script>
             tailwind.config = {
                 darkMode: 'class',
@@ -46,7 +49,7 @@
     </head>
 
     <body>
-        <section class="bg-gray-50 dark:bg-gray-900">
+        <section class="bg-gray-50 dark:bg-gray-900 anim-fade-up" style="animation-delay: 0.05s">
             <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                     Welcome Back
@@ -75,15 +78,41 @@
                                 <input type="password" name="password" id="password" placeholder="••••••••"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     required="">
+                                <button type="button" id="togglePassword"
+                                    class="inline-block rounded-lg shadow-lg text-white bg-slate-500 hover:bg-slate-700 px-4 py-2 mt-3">Show</button>
                             </div>
                             <button type="submit"
                                 class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign
                                 in</button>
                         </form>
                     </div>
+                    <div class="mt-5 flex px-3 py-4">
+                        <a href="/customers/home"
+                            class="inline-block text-white rounded-lg shadow-lg px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- Alpine.js -->
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </body>
 
 </html>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const passwordInput = document.querySelector("#password");
+        const toggleButton = document.querySelector("#togglePassword");
+
+        toggleButton.addEventListener("click", function() {
+            // Toggle the type attribute
+            const isPassword = passwordInput.getAttribute("type") === "password";
+            passwordInput.setAttribute("type", isPassword ? "text" : "password");
+
+            // Toggle the button text
+            this.textContent = isPassword ? "Hide" : "Show";
+        });
+    });
+</script>

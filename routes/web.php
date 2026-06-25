@@ -8,10 +8,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ReservationsController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('customers');
 });
 
 Route::get('/loginPage', [LoginController::class, 'login_page']);
@@ -70,6 +71,10 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-Route::prefix('customer')->group(function () {
-    Route::get('/home');
+Route::prefix('customers')->group(function () {
+    Route::get('/home', [CustomerController::class, 'home'])->name('customers');
+    Route::get('/menu', [CustomerController::class, 'menu']);
+    Route::get('/detailMenu/{menu}', [CustomerController::class, 'detailMenu']);
+    Route::get('/galleries', [CustomerController::class, 'galleries']);
+    Route::get('/contacts', [CustomerController::class, 'contacts']);
 });
